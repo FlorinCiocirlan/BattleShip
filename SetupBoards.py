@@ -109,7 +109,7 @@ def make_ship(x):
         if x == board1:
             x[ship_y[c]][ship_x[c]] = "O"
         elif x == board2:
-            x[ship_y[c]][ship_x[c]] = "O"
+            x[ship_y[c]][ship_x[c]] = "1"
 
 
 make_ship(board1)
