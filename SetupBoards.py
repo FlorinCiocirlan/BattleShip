@@ -45,10 +45,10 @@ board2 = []
 
 
 for columns in range(8):
-    board1.append("-" * 8)
+    board1.append(["-"] * 8)
 
 for columns in range(8):
-    board2.append("-" * 8)
+    board2.append(["-"] * 8)
 
 
 # This function prints the board without brackets
