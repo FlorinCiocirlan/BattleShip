@@ -50,6 +50,7 @@ for columns in range(8):
 for columns in range(8):
     board2.append("-" * 8)
 
+
 # This function prints the board without brackets
 # The output will be a grid but without brackets and commas
 
@@ -74,11 +75,42 @@ def starting_player():
 
 # This script prints who will start
 
+
 if starting_player() == name_player1:
     print("%s will start the game!" % (name_player1))
 elif starting_player == name_player2:
     print("%s will start the game!" % (name_player2))
 
 
-# This function asks the players to
-# Choose the position of their ships
+# This script ask the player
+# To choose where he wants to position his ship
+
+
+def set_position_y():
+    ship_y = [int(input("Choose a row: ")) for i in range(4)]
+    return ship_y
+
+
+def set_position_x():
+    ship_x = [int(input("Choose a column: ")) for i in range(4)]
+    return ship_x
+
+
+ship_y = set_position_y()
+ship_x = set_position_x()
+
+
+# This script will put the ship on the board
+
+
+def make_ship(x):
+    global ship_y, ship_x
+    for c in range(4):
+        if x == board1:
+            x[ship_y[c]][ship_x[c]] = "O"
+        elif x == board2:
+            x[ship_y[c]][ship_x[c]] = "O"
+
+
+make_ship(board1)
+print_board(board1)
