@@ -32,6 +32,7 @@ clear()
 
 # this is the board initialization as a list
 
+
 board1 = []
 board2 = []
 board_attack1 = []
@@ -53,6 +54,13 @@ for columns in range(8):
 for columns in range(8):
     board2.append(["-"] * 8)
 
+for columns in range(8):
+    board_attack1.append(["-"] * 8)
+
+for columns in range(8):
+    board_attack2.append(["-"] * 8)
+
+
 
 # This function prints the board without brackets
 # The output will be a grid but without brackets and commas
@@ -63,9 +71,6 @@ def print_board(x):
     y = ["1 ", "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 "]
     for rows, i in zip(x, y):
         print(i, "  ".join(rows))
-
-
-print_board(board1)
 
 
 # This function will choose who will start
@@ -102,6 +107,7 @@ def set_position_y():
             ship_y = int(input("Choose a row: "))
             assert ship_y > 0 and ship_y < 9
             correct_value = False
+
         except (AssertionError, ValueError):
             print("Please insert a number between 1 and 8")
     while down_direction is True and (direction == "DOWN" or direction == "down"):
@@ -125,8 +131,10 @@ def set_position_x():
             ship_x = int(input("Choose a column: "))
             assert ship_x > 0 and ship_x < 9
             correct_value = False
+
         except (AssertionError, ValueError):
             print("Please insert a number between 1 and 8")
+
     while right_direction is True and (direction == "right" or direction == "RIGHT"):
         try:
             assert ship_x <= 5
@@ -151,6 +159,7 @@ def set_direction():
                 raise Exception
             else:
                 correct_value = False
+
         except (ValueError, Exception):
             print("Please choose between right or down")
     return direction
@@ -179,6 +188,31 @@ def make_ship(y, x, d, b, sign):
             count += 1
 
 
+# This script will ask the players to hit
+
+def player_shoot(initial_board, attacking_board, sign):
+    count = 0
+    while count < 1:
+        try:
+            print_board(attacking_board)
+            guess_row = int(input("Guess row:"))
+            guess_col = int(input("Guess col:"))
+            assert guess_row > 0 and guess_row < 9  and guess_col > 0 and guess_col < 9 
+            if initial_board[guess_row-1][guess_col-1] == sign:
+                print("You lucky bastard,you hit the ship!")
+                initial_board[guess_row - 1][guess_col - 1] = "X"
+                attacking_board[guess_row - 1][guess_col - 1] = "X"
+                count = 1
+            elif initial_board[guess_row-1][guess_col-1] == "-":
+                print("Missed me, missed me")
+                print("Now you have to kiss me!")
+                count = 1
+            elif attacking_board[guess_row-1][guess_col-1] == "X":
+                print("You already hit there! Choose another position")
+        except (ValueError, AssertionError):
+            print("Please insert numbers between 1 and 9")
+
+
 def main():
     global direction, ship_y, ship_x
 
@@ -192,6 +226,7 @@ def main():
 
 # 3.Now we will ask the player one to choose his ship position
 
+    print_board(board1)
     direction = set_direction()
     ship_y = set_position_y() - 1
     ship_x = set_position_x() - 1
@@ -200,10 +235,13 @@ def main():
 
     make_ship(ship_y, ship_x, direction, board1, "S")
 
-# 6.We clear info about first player's table
+# 6.We clear info about first player ship position
 
     clear()
 
+# We show a blank board for the player2 to refer to
+
+    print_board(board2)
 
 # A.We ask the second player to choose his ship position
 
@@ -217,6 +255,20 @@ def main():
 
 # Now we clear the second player's ship position info
 
+    print_board(board_attack1)
+    print_board(board_attack2)
     clear()
+
+# Now we ask the players to hit each other
+    contor = 0
+    while contor < 9 and is_winner == False:
+        player_shoot(board2, board_attack1, "L")
+        player_shoot(board1, board_attack2, "S")
+        contor += 1
+        if "L" not in board2:
+            print("Congratulations! \n Player1 has won !")
+            is_winner = True
+        if "S" not in board1:
+
 
 main()
