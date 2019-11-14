@@ -100,13 +100,29 @@ def set_position_y():
 
 def set_position_x():
     correct_value = True
-    ship_x = int(input("Choose a column: "))
+    while correct_value is True:
+        try:
+            ship_x = int(input("Choose a column: "))
+            assert ship_x > 0 and ship_x < 9
+            correct_value = False
+        except (AssertionError, ValueError):
+            print("Please insert a number between 1 and 8")  
     return ship_x-1
 
 
+correct_direction_values=["right", "down", "DOWN","RIGHT","Right","Down","R","D","d","R","r"]
+
 def set_direction():
     correct_value = True
-    direction = input("Choose a direction(down or right): ")
+    while correct_value is True:
+        try:
+            direction = input("Choose a direction(down or right): ")
+            if direction not in correct_direction_values :
+                raise Exception
+            else:
+                correct_value = False
+        except (ValueError,Exception):
+            print("Please choose between right or down")
     return direction
 
 
@@ -115,41 +131,42 @@ ship_y = set_position_y()
 ship_x = set_position_x()
 direction = set_direction()
 
-
-# while right_direction == True:
-#     try:
-#         assert ship_x < 5
-#         right_direction = False
-        
-#     except AssertionError:
-#         print("Nu incape")
-#         right_direction = True
-#         ship_x = set_position_x()
-
-# while down_direction == True:
-#     try:
-#         assert ship_y < 5
-#         down_direction = False
-        
-#     except AssertionError:
-#         print("Nu incape")
-#         down_direction = True
-#         ship_y = set_position_y()
 right_direction = True
 down_direction = True
 
-def fit_in_board(is_direction, coord, set_position):
-    while is_direction is True:
-        try:
-            assert coord < 5
-            is_direction = False
-        except AssertionError:
-            print("Nu incape")
-            coord = set_position
-    return coord
+while right_direction == True:
+    try:
+        assert ship_x < 5
+        right_direction = False
+        
+    except AssertionError:
+        print("Nu incape")
+        right_direction = True
+        ship_x = set_position_x()
 
-fit_in_board(down_direction,ship_y,set_position_y())
-fit_in_board(right_direction,ship_x,set_position_x())
+while down_direction == True:
+    try:
+        assert ship_y < 5
+        down_direction = False
+        
+    except AssertionError:
+        print("Nu incape")
+        down_direction = True
+        ship_y = set_position_y()
+
+# def fit_in_board(is_direction, coord, set_position):
+#     while is_direction is True:
+#         try:
+#             assert coord < 5
+#             is_direction = False
+
+#         except AssertionError:
+#             print("Nu incape")
+#             is_direction = True
+#             coord = set_position
+
+# fit_in_board(down_direction,ship_y,set_position_y())
+# fit_in_board(right_direction,ship_x,set_position_x())
         
 
 
