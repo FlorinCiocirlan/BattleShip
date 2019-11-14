@@ -56,8 +56,10 @@ for columns in range(8):
 
 
 def print_board(x):
-    for rows in x:
-        print("  ".join(rows))
+    print("   1  2  3  4  5  6  7  8")
+    y=["1 ", "2 ", "3 ", "4 ", "5 ", "6 ","7 ","8 "]
+    for rows,i in zip(x,y):
+        print(i,"  ".join(rows))
 
 
 print_board(board1)
