@@ -190,24 +190,29 @@ def make_ship(y, x, d, b, sign):
 
 # This script will ask the players to hit
 
-def player_shoot(initial_board, attacking_board, sign):
+def player_shoot(initial_board, attacking_board, sign,list):
     count = 0
     while count < 1:
         try:
+            print("\n" * 3)
             print_board(attacking_board)
+            print("\n" * 1)
             guess_row = int(input("Guess row:"))
             guess_col = int(input("Guess col:"))
+            print("\n" *2)
             assert guess_row > 0 and guess_row < 9  and guess_col > 0 and guess_col < 9 
             if initial_board[guess_row-1][guess_col-1] == sign:
                 print("You lucky bastard,you hit the ship!")
                 initial_board[guess_row - 1][guess_col - 1] = "X"
                 attacking_board[guess_row - 1][guess_col - 1] = "X"
+                list.append("X")
                 count = 1
             elif initial_board[guess_row-1][guess_col-1] == "-":
                 print("Missed me, missed me")
                 print("Now you have to kiss me!")
+                attacking_board[guess_row-1][guess_col-1] = "M"
                 count = 1
-            elif attacking_board[guess_row-1][guess_col-1] == "X":
+            elif attacking_board[guess_row-1][guess_col-1] == "X" or attacking_board[guess_row-1][guess_col-1] == "M" :
                 print("You already hit there! Choose another position")
         except (ValueError, AssertionError):
             print("Please insert numbers between 1 and 9")
@@ -260,15 +265,53 @@ def main():
     clear()
 
 # Now we ask the players to hit each other
+    player1_winning_shots = []
+    player2_winning_shots = []
     contor = 0
-    while contor < 9 and is_winner == False:
-        player_shoot(board2, board_attack1, "L")
-        player_shoot(board1, board_attack2, "S")
-        contor += 1
-        if "L" not in board2:
-            print("Congratulations! \n Player1 has won !")
+    is_winner = False
+    while contor < 9 and is_winner is not True:
+        if len(player1_winning_shots) == 4:
+            print("\n" * 3)
+            print("Congratulations! \nPlayer1 has won !")
+            print("\n" * 2)
             is_winner = True
-        if "S" not in board1:
+            break
+        if len(player2_winning_shots) == 4:
+            print("\n" * 3)
+            print("Congratulations! \nPlayer2 has won !")
+            print("\n" * 2)
+            is_winner = True
+        player_shoot(board2, board_attack1, "L",  player1_winning_shots)
+        player_shoot(board1, board_attack2, "S",  player2_winning_shots)
+        contor += 1
 
 
 main()
+
+is_restart = True
+while is_restart == True:
+    try:
+        print("\n" * 3)
+        restart = input("Press Y to play again \nPress N to stop ")
+        if restart == "y":
+            board1 = []
+            board2 = []
+            board_attack1 = []
+            board_attack2 = []
+            
+            for columns in range(8):
+                board1.append(["-"] * 8)
+
+            for columns in range(8):
+                board2.append(["-"] * 8)
+
+            for columns in range(8):
+                board_attack1.append(["-"] * 8)
+
+            for columns in range(8):
+                board_attack2.append(["-"] * 8)
+            main()
+        elif restart == "n":
+            is_restart = False
+    except ValueError:
+        print("Press Y/N")
