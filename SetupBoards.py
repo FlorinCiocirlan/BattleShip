@@ -169,15 +169,14 @@ def set_direction():
 
 def make_ship(y, x, d, b, sign):
     count = 0
-    if b == board1:
-        if d == "right":
-            while (y + count) < len(b[1]) and count <= 3:
-                b[y][(x+count)] = sign
-                count += 1
-        if d == "down":
-            while (ship_y + count) < len(b) and count <= 3:
-                b[y+count][(x)] = sign
-                count += 1
+    if d == "right":
+        while (y + count) < len(b[1]) and count <= 3:
+            b[y][(x+count)] = sign
+            count += 1
+    if d == "down":
+        while (ship_y + count) < len(b) and count <= 3:
+            b[y+count][(x)] = sign
+            count += 1
 
 
 def main():
@@ -191,19 +190,36 @@ def main():
 
     print_starting_player()
 
-# 3.Now we will ask the player one to choose his ship positions
+# 3.Now we will ask the player one to choose his ship position
 
     direction = set_direction()
     ship_y = set_position_y() - 1
     ship_x = set_position_x() - 1
 
-# 5.Now we make the first player's board
+# 5.Now we make the first player's ship
 
     make_ship(ship_y, ship_x, direction, board1, "S")
 
 # 6.Now we print the first player board
 
     print_board(board1)
+
+# 7.Now we clear the first player's board
+
+    # clear()
+
+# A.We ask the second player to choose his ship position
+
+    direction = set_direction()
+    ship_y = set_position_y() - 1
+    ship_x = set_position_x() - 1
+
+# B.Now we make the second player's ship
+
+    make_ship(ship_y, ship_x, direction, board2, "L")
+
+# B.We print the second player's board
+    print_board(board2)
 
 
 main()
