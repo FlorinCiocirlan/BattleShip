@@ -115,28 +115,41 @@ ship_y = set_position_y()
 ship_x = set_position_x()
 direction = set_direction()
 
+
+# while right_direction == True:
+#     try:
+#         assert ship_x < 5
+#         right_direction = False
+        
+#     except AssertionError:
+#         print("Nu incape")
+#         right_direction = True
+#         ship_x = set_position_x()
+
+# while down_direction == True:
+#     try:
+#         assert ship_y < 5
+#         down_direction = False
+        
+#     except AssertionError:
+#         print("Nu incape")
+#         down_direction = True
+#         ship_y = set_position_y()
 right_direction = True
-
-while right_direction == True:
-    try:
-        assert ship_x < 5
-        right_direction = False
-        
-    except AssertionError:
-        print("Nu incape")
-        right_direction = True
-        ship_x = set_position_x()
-
 down_direction = True
-while down_direction == True:
-    try:
-        assert ship_y < 5
-        down_direction = False
-        
-    except AssertionError:
-        print("Nu incape")
-        down_direction = True
-        ship_y = set_position_y()
+
+def fit_in_board(is_direction, coord, set_position):
+    while is_direction is True:
+        try:
+            assert coord < 5
+            is_direction = False
+        except AssertionError:
+            print("Nu incape")
+            coord = set_position
+    return coord
+
+fit_in_board(down_direction,ship_y,set_position_y())
+fit_in_board(right_direction,ship_x,set_position_x())
         
 
 
