@@ -200,13 +200,10 @@ def main():
 
     make_ship(ship_y, ship_x, direction, board1, "S")
 
-# 6.Now we print the first player board
+# 6.We clear info about first player's table
 
-    print_board(board1)
+    clear()
 
-# 7.Now we clear the first player's board
-
-    # clear()
 
 # A.We ask the second player to choose his ship position
 
@@ -218,8 +215,8 @@ def main():
 
     make_ship(ship_y, ship_x, direction, board2, "L")
 
-# B.We print the second player's board
-    print_board(board2)
+# Now we clear the second player's ship position info
 
+    clear()
 
 main()
