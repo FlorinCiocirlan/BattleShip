@@ -5,7 +5,7 @@ import os
 
 
 # This script ask the players names
-# I used Tkinter for this
+# We used Tkinter for this
 # These names will be stored in the same variables as before
 # These variable can be accesed as before
 
@@ -60,17 +60,15 @@ for columns in range(8):
 
 def print_board(x):
     print("   1  2  3  4  5  6  7  8")
-    y=["1 ", "2 ", "3 ", "4 ", "5 ", "6 ","7 ","8 "]
-    for rows,i in zip(x,y):
-        print(i,"  ".join(rows))
+    y = ["1 ", "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 "]
+    for rows, i in zip(x, y):
+        print(i, "  ".join(rows))
 
 
 print_board(board1)
 
 
 # This function will choose who will start
-
-
 
 
 def choose_starting_player():
@@ -80,6 +78,7 @@ def choose_starting_player():
 
 
 # This script prints who will start
+
 
 def print_starting_player():
     if choose_starting_player() == name_player1:
@@ -136,32 +135,25 @@ def set_position_x():
         except AssertionError:
             print("Your ship won't fit on the board")
             right_direction = True
-            ship_x = set_position_x()  
+            ship_x = set_position_x()
     return ship_x
 
 
-correct_direction_values=["right", "down", "DOWN","RIGHT","Right","Down"]
+correct_direction_values = ["right", "down", "DOWN", "RIGHT", "Right", "Down"]
+
 
 def set_direction():
     correct_value = True
     while correct_value is True:
         try:
             direction = input("Choose a direction(down or right): ")
-            if direction not in correct_direction_values :
+            if direction not in correct_direction_values:
                 raise Exception
             else:
                 correct_value = False
-        except (ValueError,Exception):
+        except (ValueError, Exception):
             print("Please choose between right or down")
     return direction
-
-
-
-
-
-        
-
-
 
 
 # This script will put the ship on the board
@@ -172,11 +164,11 @@ def set_direction():
 # len(board[1]) will be the maximum X value
 # D is the direction(Ex: Right , Down)
 # B is the board(Ex: board1 , board2)
-# Sign is the sign that takes place on the board instead of "-" 
+# Sign is the sign that takes place on the board instead of "-"
 # The sign will be different for each player
 
-def make_ship(y,x,d,b,sign):
-    count=0
+def make_ship(y, x, d, b, sign):
+    count = 0
     if b == board1:
         if d == "right":
             while (y + count) < len(b[1]) and count <= 3:
@@ -186,7 +178,8 @@ def make_ship(y,x,d,b,sign):
             while (ship_y + count) < len(b) and count <= 3:
                 b[y+count][(x)] = sign
                 count += 1
-                
+
+
 def main():
     global direction, ship_y, ship_x
 
@@ -200,10 +193,10 @@ def main():
 
 # 3.Now we will ask the player one to choose his ship positions
 
-    direction = set_direction() 
-    ship_y=set_position_y()-1
+    direction = set_direction()
+    ship_y = set_position_y() - 1
     ship_x = set_position_x() - 1
-    
+
 # 5.Now we make the first player's board
 
     make_ship(ship_y, ship_x, direction, board1, "S")
@@ -212,5 +205,5 @@ def main():
 
     print_board(board1)
 
-main()
 
+main()
