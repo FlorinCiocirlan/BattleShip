@@ -87,30 +87,80 @@ elif starting_player == name_player2:
 
 
 def set_position_y():
-    ship_y = [int(input("Choose a row: ")) for i in range(4)]
-    return ship_y
+    correct_value = True
+    while correct_value is True:
+        try:
+            ship_y = int(input("Choose a row: "))
+            assert ship_y > 0 and ship_y < 9
+            correct_value = False
+        except (AssertionError, ValueError):
+            print("Please insert a number between 1 and 8")   
+    return ship_y-1
 
 
 def set_position_x():
-    ship_x = [int(input("Choose a column: ")) for i in range(4)]
-    return ship_x
+    correct_value = True
+    ship_x = int(input("Choose a column: "))
+    return ship_x-1
+
+
+def set_direction():
+    correct_value = True
+    direction = input("Choose a direction(down or right): ")
+    return direction
+
 
 
 ship_y = set_position_y()
 ship_x = set_position_x()
+direction = set_direction()
+
+right_direction = True
+
+while right_direction == True:
+    try:
+        assert ship_x < 5
+        right_direction = False
+        
+    except AssertionError:
+        print("Nu incape")
+        right_direction = True
+        ship_x = set_position_x()
+
+down_direction = True
+while down_direction == True:
+    try:
+        assert ship_y < 5
+        down_direction = False
+        
+    except AssertionError:
+        print("Nu incape")
+        down_direction = True
+        ship_y = set_position_y()
+        
+
+
 
 
 # This script will put the ship on the board
 
+print(len(board1))
+def make_ship(y,x,d,b):
+    global ship_y, ship_x, direction
+    count=0
+    if b == board1:
+        if d == "right":
+            while (ship_x + count) < len(b[1]) and count <= 3:
+                b[ship_y][(ship_x+count)] = "S"
+                count += 1
+        if d == "down":
+            while (ship_y + count) < len(b) and count <= 3:
+                b[ship_y+count][(ship_x)] = "S"
+                count += 1
+                
+    elif b == board2:
+        b[ship_y[c]][ship_x[c]] = "1"
+       
 
-def make_ship(x):
-    global ship_y, ship_x
-    for c in range(4):
-        if x == board1:
-            x[ship_y[c]][ship_x[c]] = "O"
-        elif x == board2:
-            x[ship_y[c]][ship_x[c]] = "1"
-
-
-make_ship(board1)
+make_ship(ship_y,ship_x,direction,board1)
 print_board(board1)
