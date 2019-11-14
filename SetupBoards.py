@@ -13,6 +13,7 @@ import os
 root = tk.Tk()
 root.withdraw()
 
+
 name_player1 = simpledialog.askstring(title="Start", prompt="What is your name player 1?")
 name_player2 = simpledialog.askstring(title="Start", prompt="What is your name player 2?")
 
@@ -33,6 +34,8 @@ clear()
 
 board1 = []
 board2 = []
+board_attack1 = []
+board_attack2 = []
 
 
 # This part of the module creates the board
@@ -68,51 +71,76 @@ print_board(board1)
 # This function will choose who will start
 
 
-players = [name_player1, name_player2]
 
 
-def starting_player():
+def choose_starting_player():
+    global name_player2, name_player1
+    players = [name_player1, name_player2]
     return random.choice(players)
 
 
 # This script prints who will start
 
-
-if starting_player() == name_player1:
-    print("%s will start the game!" % (name_player1))
-elif starting_player == name_player2:
-    print("%s will start the game!" % (name_player2))
+def print_starting_player():
+    if choose_starting_player() == name_player1:
+        print("%s will start the game!" % (name_player1))
+    elif choose_starting_player == name_player2:
+        print("%s will start the game!" % (name_player2))
 
 
 # This script ask the player
 # To choose where he wants to position his ship
+# This also verifies if the user input positions
+# Don't exceed the board
 
 
 def set_position_y():
+    global direction
     correct_value = True
+    down_direction = True
     while correct_value is True:
         try:
             ship_y = int(input("Choose a row: "))
             assert ship_y > 0 and ship_y < 9
             correct_value = False
         except (AssertionError, ValueError):
-            print("Please insert a number between 1 and 8")   
-    return ship_y-1
+            print("Please insert a number between 1 and 8")
+    while down_direction is True and (direction == "DOWN" or direction == "down"):
+        try:
+            assert ship_y <= 5
+            down_direction = False
+
+        except AssertionError:
+            print("Your ship won't fit on the board")
+            down_direction = True
+            ship_y = set_position_y()
+    return ship_y
 
 
 def set_position_x():
+    global direction
     correct_value = True
+    right_direction = True
     while correct_value is True:
         try:
             ship_x = int(input("Choose a column: "))
             assert ship_x > 0 and ship_x < 9
             correct_value = False
         except (AssertionError, ValueError):
-            print("Please insert a number between 1 and 8")  
-    return ship_x-1
+            print("Please insert a number between 1 and 8")
+    while right_direction is True and (direction == "right" or direction == "RIGHT"):
+        try:
+            assert ship_x <= 5
+            right_direction = False
+
+        except AssertionError:
+            print("Your ship won't fit on the board")
+            right_direction = True
+            ship_x = set_position_x()  
+    return ship_x
 
 
-correct_direction_values=["right", "down", "DOWN","RIGHT","Right","Down","R","D","d","R","r"]
+correct_direction_values=["right", "down", "DOWN","RIGHT","Right","Down"]
 
 def set_direction():
     correct_value = True
@@ -129,70 +157,60 @@ def set_direction():
 
 
 
-ship_y = set_position_y()
-ship_x = set_position_x()
-direction = set_direction()
 
-right_direction = True
-down_direction = True
 
-while right_direction == True:
-    try:
-        assert ship_x < 5
-        right_direction = False
-        
-    except AssertionError:
-        print("Nu incape")
-        right_direction = True
-        ship_x = set_position_x()
-
-while down_direction == True:
-    try:
-        assert ship_y < 5
-        down_direction = False
-        
-    except AssertionError:
-        print("Nu incape")
-        down_direction = True
-        ship_y = set_position_y()
-
-# def fit_in_board(is_direction, coord, set_position):
-#     while is_direction is True:
-#         try:
-#             assert coord < 5
-#             is_direction = False
-
-#         except AssertionError:
-#             print("Nu incape")
-#             is_direction = True
-#             coord = set_position
-
-# fit_in_board(down_direction,ship_y,set_position_y())
-# fit_in_board(right_direction,ship_x,set_position_x())
         
 
 
 
 
 # This script will put the ship on the board
+# Y is the height of the board(Row)
+# Example: if Y = 1 then board[y] = the second row
+# X is the width of the board
+# Example if X = 1 then board[1][x] is the second element of the second row
+# len(board[1]) will be the maximum X value
+# D is the direction(Ex: Right , Down)
+# B is the board(Ex: board1 , board2)
+# Sign is the sign that takes place on the board instead of "-" 
+# The sign will be different for each player
 
-print(len(board1))
-def make_ship(y,x,d,b):
-    global ship_y, ship_x, direction
+def make_ship(y,x,d,b,sign):
     count=0
     if b == board1:
         if d == "right":
-            while (ship_x + count) < len(b[1]) and count <= 3:
-                b[ship_y][(ship_x+count)] = "S"
+            while (y + count) < len(b[1]) and count <= 3:
+                b[y][(x+count)] = sign
                 count += 1
         if d == "down":
             while (ship_y + count) < len(b) and count <= 3:
-                b[ship_y+count][(ship_x)] = "S"
+                b[y+count][(x)] = sign
                 count += 1
                 
-    elif b == board2:
-        b[ship_y[c]][ship_x[c]] = "1"
-       
+def main():
+    global direction, ship_y, ship_x
 
-make_ship(ship_y,ship_x,direction,board1)
-print_board(board1)
+# 1.The random function will choose who will start
+
+    choose_starting_player()
+
+# 2.Now we print the startin player
+
+    print_starting_player()
+
+# 3.Now we will ask the player one to choose his ship positions
+
+    direction = set_direction() 
+    ship_y=set_position_y()-1
+    ship_x = set_position_x() - 1
+    
+# 5.Now we make the first player's board
+
+    make_ship(ship_y, ship_x, direction, board1, "S")
+
+# 6.Now we print the first player board
+
+    print_board(board1)
+
+main()
+
